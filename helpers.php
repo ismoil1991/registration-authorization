@@ -24,7 +24,7 @@ function get_user_by_email($email)
  *
  * Description: добавить пользователя в БД
  *
- * Return value: int (user_id)
+ * Return value: null
  **/
 function add_user($email, $password)
 {
@@ -32,11 +32,6 @@ function add_user($email, $password)
     $sql = 'INSERT INTO users (email,password) VALUES (:email,:password)';
     $statement = $pdo->prepare($sql);
     $statement->execute(['email' => $email, 'password' => $password]);
-
-    $statement = $pdo->prepare('SELECT id FROM users WHERE email =:email');
-    $statement->execute(['email' => $email]);
-    $user_id = $statement->fetch(2);
-    return $user_id;
 }
 
 /**
@@ -51,7 +46,6 @@ function add_user($email, $password)
 function set_flash_message($name, $message)
 {
     $_SESSION[$name] = $message;
-    display_flash_message($_SESSION[$name]);
 }
 
 /**
@@ -64,7 +58,10 @@ function set_flash_message($name, $message)
  **/
 function display_flash_message($name)
 {
-    $_SESSION[$name];
+    if ($_SESSION[$name]){
+        echo '<div class="alert alert-'.$name.' text-dark" role="alert">'.$_SESSION[$name].'</div>';
+        unset($_SESSION[$name]);
+    }
 }
 
 /**
