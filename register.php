@@ -9,7 +9,7 @@ $user = get_user_by_email($email);
 
 if (!empty($user)){
     $message = '<strong>Уведомление!</strong> Этот эл. адрес уже занят другим пользователем.';
-    $name ='error';
+    $name ='danger';
     set_flash_message($name, $message);
     redirect_to('Location: /page_register.php');
 } else {
