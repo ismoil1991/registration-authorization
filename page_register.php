@@ -63,16 +63,7 @@ include 'helpers.php'
                             </div>
                             <div class="col-xl-6 ml-auto mr-auto">
                                 <div class="card p-4 rounded-plus bg-faded">
-                                    <?php if ($_SESSION['error']):?>
-                                    <div class="alert alert-danger text-dark" role="alert">
-                                        <?= $_SESSION['error']; unset($_SESSION['error'])?>
-                                    </div>
-                                    <?php endif;?>
-                                    <?php if ($_SESSION['success']): ?>
-                                        <div class="alert alert-success text-dark" role="alert">
-                                            <?= $_SESSION['success']; unset($_SESSION['success'])?>
-                                        </div>
-                                    <?php endif;?>
+                                    <?php display_flash_message('danger');?>
                                     <form id="js-login" novalidate="" action="register.php" method="post">
                                         <div class="form-group">
                                             <label class="form-label" for="emailverify">Email</label>
