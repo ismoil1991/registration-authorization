@@ -1,6 +1,6 @@
 <?php
 session_start();
-include 'helpers.php';
+include 'functions.php';
 
 $email = $_POST['email'];
 $password = $_POST['password'];
