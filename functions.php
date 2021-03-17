@@ -98,9 +98,12 @@ function login($email, $password)
     $statement->execute(['email' => $email]);
     $user = $statement->fetch(2);
 
-    $password = password_verify($password, $user['password']);
-
-    if ($user['email'] == $email && $user['password'] == $password)
-        return true;
-    return false;
+    if ($user) {
+        $password = password_verify($password, $user['password']);
+        if ($password)
+            return true;
+        return false;
+    } else {
+        return false;
+    }
 }
