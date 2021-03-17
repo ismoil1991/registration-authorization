@@ -15,7 +15,7 @@ if ($user){
     redirect_to('Location: /users.php');
 } else {
     $name = 'danger';
-    $message = 'Неправильный пароль или имя пользователя';
+    $message = 'Неправильный пароль или email';
     set_flash_message($name,$message);
 
     redirect_to('Location: /page_login.php');
