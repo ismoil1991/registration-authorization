@@ -101,9 +101,51 @@ function login($email, $password)
     if ($user) {
         $password = password_verify($password, $user['password']);
         if ($password)
-            return true;
-        return false;
+            $_SESSION['user'] = $user;
+        return true;
     } else {
         return false;
     }
+}
+
+/**
+ * Return value: $user
+ */
+function set_session()
+{
+    $_SESSION['user'];
+}
+
+/**
+ * Return value: boolean
+ */
+function is_not_logged_in()
+{
+    if (!isset($_SESSION['user']))
+        return true;
+    return false;
+}
+
+/**
+ * Return value: boolean
+ */
+function is_admin()
+{
+    $role = $_SESSION['user']['role'];
+    if ($role == 'admin')
+        return true;
+    return false;
+}
+
+/**
+ * Return value: array
+ */
+function get_users()
+{
+    $pdo = new PDO("mysql:host=localhost;dbname=diving", "root", "root");
+    $query = 'SELECT * FROM users';
+    $statement = $pdo->prepare($query);
+    $statement->execute();
+    return $statement->fetchAll(2);
+
 }
