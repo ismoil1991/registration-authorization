@@ -109,7 +109,7 @@ function login($email, $password)
 }
 
 /**
- * Return value: $user
+ * Return value: null
  */
 function set_session()
 {
