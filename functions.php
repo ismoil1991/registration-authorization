@@ -35,6 +35,7 @@ function add_user($email, $password)
         'email' => $email,
         'password' => password_hash($password, PASSWORD_DEFAULT)
     ]);
+    return $pdo->lastInsertId();
 }
 
 /**
@@ -147,5 +148,92 @@ function get_users()
     $statement = $pdo->prepare($query);
     $statement->execute();
     return $statement->fetchAll(2);
-
 }
+
+/**
+ * Parameters: value: null
+ */
+function edit_information($user_id, $firstname, $job_title, $phone, $address)
+{
+    $params = [
+        'id' => $user_id,
+        'fname' => $firstname,
+        'job_title' => $job_title,
+        'phone' => $phone,
+        'address' => $address
+    ];
+
+    $pdo = new PDO("mysql:host=localhost;dbname=diving", "root", "root");
+    $query = 'UPDATE users SET fname =:fname, job_title =:job_title, phone =:phone, address =:address WHERE id =:id';
+    $statement = $pdo->prepare($query);
+    $statement->execute($params);
+
+    return boolval($statement);
+}
+
+function set_status($status, $user_id)
+{
+    $pdo = new PDO("mysql:host=localhost;dbname=diving", "root", "root");
+    $query = 'UPDATE users SET status =:status WHERE id =:id';
+    $statement = $pdo->prepare($query);
+    $statement->execute([
+        'status' => $status,
+        'id' => $user_id
+    ]);
+
+    return boolval($statement);
+}
+
+function upload_avatar($img,$user_id)
+{
+    $dir = 'img/uploads/';
+    $file = basename($img["name"]);
+
+    if (move_uploaded_file($img['tmp_name'], $dir . $file)) {
+        $pdo = new PDO("mysql:host=localhost;dbname=diving", "root", "root");
+        $query = 'UPDATE users SET img =:img WHERE id =:id';
+        $statement = $pdo->prepare($query);
+        $statement->execute([
+            'img' => $dir . $file,
+            'id' => $user_id
+        ]);
+        return boolval($statement);
+    } else {
+        return false;
+    }
+}
+
+function add_social_links($telegram, $instagram, $vk, $user_id)
+{
+    $pdo = new PDO("mysql:host=localhost;dbname=diving", "root", "root");
+    $query = 'UPDATE users SET vk_link_href =:vk_link_href, telegram_link_href =:telegram_link_href, instagram_link_href =:instagram_link_href WHERE id =:id';
+    $statement = $pdo->prepare($query);
+    $statement->execute([
+        'vk_link_href' => $vk,
+        'telegram_link_href' => $telegram,
+        'instagram_link_href' => $instagram,
+        'id' => $user_id
+    ]);
+
+    return boolval($statement);
+}
+
+function is_author($logged_user_id, $edit_user_id)
+{
+    $loggelUserId = get_user_by_id($logged_user_id);
+    if ($loggelUserId['id'] == $edit_user_id){
+        return true;
+    }
+}
+
+function get_user_by_id($id)
+{
+    $pdo = new PDO("mysql:host=localhost;dbname=diving", "root", "root");
+    $sql = 'SELECT * FROM users WHERE id =:id';
+    $statement = $pdo->prepare($sql);
+    $statement->execute(['id' => $id]);
+    return $statement->fetch(2);
+}
+
+
+?>
