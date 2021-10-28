@@ -48,9 +48,11 @@ if (is_not_logged_in()) {
 </nav>
 
 <main id="js-page-content" role="main" class="page-content mt-3">
-    <?php
-    display_flash_message('success');
-    ?>
+    <?php if ($_SESSION['success']): ?>
+        <?php display_flash_message('success') ?>
+    <?php else: ?>
+        <?php display_flash_message('danger'); ?>
+    <?php endif; ?>
     <div class="subheader">
         <h1 class="subheader-title">
             <i class='subheader-icon fal fa-users'></i> Список пользователей
@@ -59,7 +61,7 @@ if (is_not_logged_in()) {
     <div class="row">
         <div class="col-xl-12">
             <?php if (is_admin()): ?>
-                <a class="btn btn-success" href="create_user.html">Добавить</a>
+                <a class="btn btn-success" href="create_user.php">Добавить</a>
             <?php endif; ?>
             <div class="border-faded bg-faded p-3 mb-g d-flex mt-3">
                 <input type="text" id="js-filter-contacts" name="filter-contacts"
@@ -102,7 +104,7 @@ if (is_not_logged_in()) {
                                     <?php endif; ?>
                                 </a>
                                 <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="edit.html?id=<?= $user['id']; ?>">
+                                    <a class="dropdown-item" href="edit.php?id=<?= $user['id']; ?>">
                                         <i class="fa fa-edit"></i>
                                         Редактировать</a>
                                     <a class="dropdown-item" href="security.html?id=<?= $user['id']; ?>">
