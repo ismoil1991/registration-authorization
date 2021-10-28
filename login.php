@@ -12,8 +12,6 @@ if ($user) {
     $message = 'OK';
     set_flash_message($name, $message);
 
-    set_session();
-
     redirect_to('Location: /users.php');
 } else {
     $name = 'danger';
