@@ -221,9 +221,9 @@ function add_social_links($telegram, $instagram, $vk, $user_id)
 function is_author($logged_user_id, $edit_user_id)
 {
     $loggelUserId = get_user_by_id($logged_user_id);
-    if ($loggelUserId['id'] == $edit_user_id){
+    if ($loggelUserId['id'] == $edit_user_id)
         return true;
-    }
+    return false;
 }
 
 function get_user_by_id($id)
@@ -235,5 +235,24 @@ function get_user_by_id($id)
     return $statement->fetch(2);
 }
 
+function edit_credentials($user_id, $email, $password)
+{
+    $user = get_user_by_email($email);
+
+    if ($user['email'] == $email){
+        if ($user['id'] != $user_id)
+            return false;
+    }
+
+    $pdo = new PDO("mysql:host=localhost;dbname=diving", "root", "root");
+    $sql = 'UPDATE users SET email =:email, password =:password WHERE id=:id';
+    $statement = $pdo->prepare($sql);
+    $statement->execute([
+        'id' => $user_id,
+        'email' => $email,
+        'password' => password_hash($password, PASSWORD_DEFAULT)
+    ]);
+    return boolval($statement);
+}
 
 ?>
