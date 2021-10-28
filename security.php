@@ -57,6 +57,7 @@ if (!is_admin()){
             </h1>
 
         </div>
+        <?php display_flash_message('danger'); ?>
         <form action="security_handle.php" method="post">
             <div class="row">
                 <div class="col-xl-6">
