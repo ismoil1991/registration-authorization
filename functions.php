@@ -184,23 +184,30 @@ function set_status($status, $user_id)
     return boolval($statement);
 }
 
-function upload_avatar($img,$user_id)
+function upload_avatar($img, $user_id)
 {
     $dir = 'img/uploads/';
     $file = basename($img["name"]);
 
-    if (move_uploaded_file($img['tmp_name'], $dir . $file)) {
-        $pdo = new PDO("mysql:host=localhost;dbname=diving", "root", "root");
-        $query = 'UPDATE users SET img =:img WHERE id =:id';
-        $statement = $pdo->prepare($query);
-        $statement->execute([
-            'img' => $dir . $file,
-            'id' => $user_id
-        ]);
-        return boolval($statement);
-    } else {
-        return false;
+    $user = get_user_by_id($user_id);
+    if ($user['img'] == $dir . $file)
+        return true;
+
+    if (!$user['img']){
+        move_uploaded_file($img['tmp_name'], $dir . $file);
+    } else{
+        unlink($user['img']);
+        move_uploaded_file($img['tmp_name'], $dir . $file);
     }
+
+    $pdo = new PDO("mysql:host=localhost;dbname=diving", "root", "root");
+    $query = 'UPDATE users SET img =:img WHERE id =:id';
+    $statement = $pdo->prepare($query);
+    $statement->execute([
+        'img' => $dir . $file,
+        'id' => $user_id
+    ]);
+    return boolval($statement);
 }
 
 function add_social_links($telegram, $instagram, $vk, $user_id)
