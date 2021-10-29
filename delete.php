@@ -10,7 +10,7 @@ if (!is_admin()) {
 
         redirect_to('Location: /users.php');
     } else {
-        $delete = delete($_GET['id']);
+        delete($_GET['id']);
         unset($_SESSION['user']);
         redirect_to('Location: /page_register.php');
     }
