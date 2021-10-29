@@ -100,10 +100,9 @@ function login($email, $password)
     $user = $statement->fetch(2);
 
     if ($user) {
-        if (!password_verify($password, $user['password']))
-            return false;
-        
-        $_SESSION['user'] = $user;
+        $password = password_verify($password, $user['password']);
+        if ($password)
+            $_SESSION['user'] = $user;
         return true;
     } else {
         return false;
