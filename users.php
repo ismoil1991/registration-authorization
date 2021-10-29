@@ -91,9 +91,9 @@ if (is_not_logged_in()) {
                                           style="background-image:url('<?= $user['img']; ?>'); background-size: cover;"></span>
                                 </span>
                             <div class="info-card-text flex-1">
-                                <a href="javascript:<?= $user['name_href']; ?>" class="fs-xl text-truncate text-truncate-lg text-info"
+                                <a href="javascript:page_profile.php?id=<?= $user['id']; ?>" class="fs-xl text-truncate text-truncate-lg text-info"
                                    data-toggle="dropdown" aria-expanded="false">
-                                    <?= $user['name']; ?>
+                                    <?= $user['fname']; ?>
 
                                     <?php if (is_admin()): ?>
                                         <i class="fal fas fa-cog fa-fw d-inline-block ml-1 fs-md"></i>
@@ -107,7 +107,7 @@ if (is_not_logged_in()) {
                                     <a class="dropdown-item" href="edit.php?id=<?= $user['id']; ?>">
                                         <i class="fa fa-edit"></i>
                                         Редактировать</a>
-                                    <a class="dropdown-item" href="security.html?id=<?= $user['id']; ?>">
+                                    <a class="dropdown-item" href="security.php?id=<?= $user['id']; ?>">
                                         <i class="fa fa-lock"></i>
                                         Безопасность</a>
                                     <a class="dropdown-item" href="status.html?id=<?= $user['id']; ?>">
