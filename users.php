@@ -86,7 +86,7 @@ if (is_not_logged_in()) {
                      data-filter-tags="<?= $user['tags']; ?>">
                     <div class="card-body border-faded border-top-0 border-left-0 border-right-0 rounded-top">
                         <div class="d-flex flex-row align-items-center">
-                                <span class="status status-<?= $user['status_class']; ?> mr-3">
+                                <span class="status status-<?= ($user['status'] == 'offline') ? 'danger' : (($user['status'] == 'away') ? 'warning' :  'success'); ?> mr-3">
                                     <span class="rounded-circle profile-image d-block "
                                           style="background-image:url('<?= $user['img']; ?>'); background-size: cover;"></span>
                                 </span>
@@ -110,14 +110,14 @@ if (is_not_logged_in()) {
                                     <a class="dropdown-item" href="security.php?id=<?= $user['id']; ?>">
                                         <i class="fa fa-lock"></i>
                                         Безопасность</a>
-                                    <a class="dropdown-item" href="status.html?id=<?= $user['id']; ?>">
+                                    <a class="dropdown-item" href="status.php?id=<?= $user['id']; ?>">
                                         <i class="fa fa-sun"></i>
                                         Установить статус</a>
-                                    <a class="dropdown-item" href="media.html?id=<?= $user['id']; ?>">
+                                    <a class="dropdown-item" href="media.php?id=<?= $user['id']; ?>">
                                         <i class="fa fa-camera"></i>
                                         Загрузить аватар
                                     </a>
-                                    <a href="#" class="dropdown-item" onclick="return confirm('are you sure?');">
+                                    <a href="delete.php?id=<?= $user['id']; ?>" class="dropdown-item" onclick="return confirm('are you sure?');">
                                         <i class="fa fa-window-close"></i>
                                         Удалить
                                     </a>
