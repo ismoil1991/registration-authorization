@@ -261,5 +261,18 @@ function edit_credentials($user_id, $email, $password)
     ]);
     return boolval($statement);
 }
+function delete($user_id)
+{
+    $user = get_user_by_id($user_id);
 
+    if($user['img'])
+        unlink($user['img']);
+
+    $pdo = new PDO("mysql:host=localhost;dbname=diving", "root", "root");
+    $sql = 'DELETE FROM users WHERE id=:id';
+    $statement = $pdo->prepare($sql);
+    $statement->execute(['id' => $user_id]);
+
+    return boolval($statement);
+}
 ?>
