@@ -190,14 +190,14 @@ function upload_avatar($img, $user_id)
     $file = basename($img["name"]);
 
     $user = get_user_by_id($user_id);
-    if ($user['img'] == $dir . $file)
-        return true;
 
     if (!$user['img']){
         move_uploaded_file($img['tmp_name'], $dir . $file);
-    } else{
-        unlink($user['img']);
-        move_uploaded_file($img['tmp_name'], $dir . $file);
+    } else {
+        if (is_file($user['img'])) {
+            unlink($user['img']);
+            move_uploaded_file($img['tmp_name'], $dir . $file);
+        }
     }
 
     $pdo = new PDO("mysql:host=localhost;dbname=diving", "root", "root");
@@ -261,11 +261,12 @@ function edit_credentials($user_id, $email, $password)
     ]);
     return boolval($statement);
 }
+
 function delete($user_id)
 {
     $user = get_user_by_id($user_id);
 
-    if($user['img'])
+    if(is_file($user['img']))
         unlink($user['img']);
 
     $pdo = new PDO("mysql:host=localhost;dbname=diving", "root", "root");
@@ -275,4 +276,5 @@ function delete($user_id)
 
     return boolval($statement);
 }
+
 ?>
